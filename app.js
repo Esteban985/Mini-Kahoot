@@ -1,4 +1,5 @@
 class Jugador {
+    //Propiedades privadas, solo puede la misma clase usarlas.
     #nombre;
     #puntaje;
     #respuestasCorrectas;
@@ -8,14 +9,13 @@ class Jugador {
         this.#respuestasCorrectas = 0;
     }
 
+    //Metodo geter me devuelve el valor de un atributo
     get nombre() {
         return this.#nombre
     }
 
+    //Metodo seter nos permiten asignarle un valor a un atributo y podemos realizar una validacion
     set nombre(value) {
-        // if (value.length < 3) {
-        //     throw new Error('No se pueden ingresar nombres menores a 3')
-        // }
         this.#nombre = value
     }
 
@@ -23,6 +23,7 @@ class Jugador {
         return `Tienes ${this.#puntaje} puntos`
     }
 
+    //Propiedades virtuales: para mostrar solo el puntaje pero como number
     get puntos() {
         return this.#puntaje
     }
@@ -206,7 +207,7 @@ let formInicio = document.querySelector('#form-iniciar')
 
 const pregunta1 = new Pregunta('Cual es mi edad', ['10', '20', '30', '50'], '30', 10)
 const pregunta2 = new Pregunta('Cual es mi sue;o', ['10', '20', '30', '50'], '30', 10)
-const pregunta3 = new Pregunta('Cual es mi mercado', ['10', '20', '30', '50'], '30', 10)
+const pregunta3 = new Pregunta('Cual es mi mercado', ['10', '20', '30', '50','60'], '30', 10)
 const pregunta4 = new Pregunta('Cual es mi fjfjf', ['10', '20', '30', '50'], '30', 10)
 const pregunta5 = new Pregunta('Cual es mi comida Favorita', ['10', '20', '30', '50'], '30', 10)
 
@@ -245,13 +246,34 @@ respuestaVisual.addEventListener('click', (event) => {
 
         QuizOne.responder(event.target.textContent)
         btnSiguiente.disabled = false
-        btnSiguiente.addEventListener
-
 
         if (!btnFilazido.classList.contains('d-none')) {
             btnFilazido.disabled = false
         }
     }
+})
+
+btnSiguiente.addEventListener('click', (event) => {
+    QuizOne.siguientePregunta()
+    renderizar(QuizOne.jugador)
+})
+
+btnFilazido.addEventListener('click', (event) => {
+    pantalla2.classList.add('d-none')
+    pantallaFinal.classList.remove('d-none')
+    let fin = QuizOne.finalizarQuiz()
+    resultadoJugador.textContent = fin.nombre
+    resultadoCorrectas.textContent = fin.correctas
+    resultadoPuntaje.textContent = fin.puntaje
+    btnFilazido.classList.add('d-none')
+    btnSiguiente.classList.remove('d-none')
+})
+
+btnReiniciar.addEventListener('click', (event) => {
+    QuizOne.jugador.reiniciar()
+    pantallaFinal.classList.add('d-none')
+    pantalla1.classList.remove('d-none')
+    btnFilazido.disabled = true
 })
 
 const renderizar = (playerOne) => {
@@ -281,26 +303,3 @@ const renderizar = (playerOne) => {
     }
     btnSiguiente.disabled = true
 }
-
-btnSiguiente.addEventListener('click', (event) => {
-    QuizOne.siguientePregunta()
-    renderizar(QuizOne.jugador)
-})
-
-btnFilazido.addEventListener('click', (event) => {
-    pantalla2.classList.add('d-none')
-    pantallaFinal.classList.remove('d-none')
-    let fin = QuizOne.finalizarQuiz()
-    resultadoJugador.textContent = fin.nombre
-    resultadoCorrectas.textContent = fin.correctas
-    resultadoPuntaje.textContent = fin.puntaje
-    btnFilazido.classList.add('d-none')
-    btnSiguiente.classList.remove('d-none')
-})
-
-btnReiniciar.addEventListener('click', (event) => {
-    QuizOne.jugador.reiniciar()
-    pantallaFinal.classList.add('d-none')
-    pantalla1.classList.remove('d-none')
-    btnFilazido.disabled = true
-})
